@@ -13,8 +13,6 @@ public class Disconnect extends AbstractFrame {
 
         List<Pair<String,String>> headers = new LinkedList<>();
         headers.add(accept_version_header);
-        headers.add(accept_version_header);
-
         super.setHeaders(headers);;
     }
 }
