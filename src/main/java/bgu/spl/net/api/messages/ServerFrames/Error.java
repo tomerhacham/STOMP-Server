@@ -1,5 +1,6 @@
-package bgu.spl.net.api.messages;
+package bgu.spl.net.api.messages.ServerFrames;
 
+import bgu.spl.net.api.messages.AbstractFrame;
 import javafx.util.Pair;
 
 import java.util.LinkedList;

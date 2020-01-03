@@ -1,11 +1,12 @@
-package bgu.spl.net.api.messages;
+package bgu.spl.net.api.messages.ServerFrames;
 
+import bgu.spl.net.api.messages.AbstractFrame;
 import javafx.util.Pair;
 
 import java.util.LinkedList;
 import java.util.List;
 
-public class Receipt  extends AbstractFrame{
+public class Receipt  extends AbstractFrame {
 
     public Receipt(String receipt) {
         super("RECEIPT");
