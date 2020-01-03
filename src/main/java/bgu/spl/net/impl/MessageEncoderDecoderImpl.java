@@ -25,7 +25,7 @@ public class MessageEncoderDecoderImpl implements MessageEncoderDecoder<Abstract
         }
 
         pushByte(nextByte);
-        return null; //not a line yet
+        return null; //not a full message yet
     }
 
     @Override
@@ -49,7 +49,7 @@ public class MessageEncoderDecoderImpl implements MessageEncoderDecoder<Abstract
         return result;
     }
 
-    public static AbstractFrame parser(String result){
+    private AbstractFrame parser(String result){
         int index=1;
         String[] parameters = result.split(System.lineSeparator());
         String command = parameters[0];
@@ -65,7 +65,7 @@ public class MessageEncoderDecoderImpl implements MessageEncoderDecoder<Abstract
         return frame;
     }
 
-    public static AbstractFrame InterpretClientFrame(String command, List<String> headers, String body) {
+    private AbstractFrame InterpretClientFrame(String command, List<String> headers, String body) {
         AbstractFrame frame = null;
         switch (command) {
             case "CONNECT": {
