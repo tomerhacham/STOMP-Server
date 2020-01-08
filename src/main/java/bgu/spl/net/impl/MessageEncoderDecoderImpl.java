@@ -75,7 +75,7 @@ public class MessageEncoderDecoderImpl implements MessageEncoderDecoder<Abstract
                 frame = new Subscribe(headers.get(0), headers.get(1), headers.get(2));break;
             }
             case "UNSUBSCRIBE": {
-                frame = new Unsbscribe(headers.get(0));break;
+                frame = new Unsbscribe(headers.get(0), headers.get(1), headers.get(2));break;
             }
             case "SEND": {
                 frame = new Send(headers.get(0), body);break;
