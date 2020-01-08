@@ -1,24 +1,38 @@
 package bgu.spl.net.impl.echo;
 
-import bgu.spl.net.api.messages.Message;
-import bgu.spl.net.api.messages.Receipt;
+import bgu.spl.net.api.messages.AbstractFrame;
+import bgu.spl.net.api.messages.ClientFrames.*;
+import bgu.spl.net.api.messages.ServerFrames.Message;
+import bgu.spl.net.api.messages.ServerFrames.Receipt;
+import bgu.spl.net.impl.MessageEncoderDecoderImpl;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.Socket;
+import java.util.LinkedList;
+import java.util.List;
 
 public class EchoClient {
 
     public static void main(String[] args) throws IOException {
+        //region
+        //Message msg = new Message("78", "000245", "sci-fi", "");
+        //Receipt receipt = new Receipt("78");
+        //endregion
+        AbstractFrame subscribe = new Disconnect("78");
+        System.out.println("-------------------");
+        System.out.println(subscribe);
 
-/*        Message msg  = new Message("78","000245", "sci-fi","hello words this is tomer");
-        Receipt receipt = new Receipt("78");
-        System.out.println(msg);
-        System.out.println(receipt);*/
-        if (args.length == 0) {
+
+        AbstractFrame frame = MessageEncoderDecoderImpl.parser(subscribe.toString());
+        System.out.println("-----------------------");
+        System.out.println(frame);
+
+
+/*        for(int i=0;i<headers.size();i++)
+        {
+            headers.set(i,headers.get(i).split(":")[1]);
+        }*/
+        //    while ()
+/*        if (args.length == 0) {
             args = new String[]{"localhost", "hello"};
         }
 
@@ -40,6 +54,7 @@ public class EchoClient {
             System.out.println("awaiting response");
             String line = in.readLine();
             System.out.println("message from server: " + line);
-        }
+        }*/
     }
+
 }
