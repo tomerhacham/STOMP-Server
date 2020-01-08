@@ -23,7 +23,9 @@ public class BlockingConnectionHandler<T> implements Runnable, ConnectionHandler
     }
 
     @Override
-    public void run() {
+    public void run()
+    //starting dialog with the client.
+    {
         try (Socket sock = this.sock) { //just for automatic closing
             int read;
 
@@ -54,7 +56,14 @@ public class BlockingConnectionHandler<T> implements Runnable, ConnectionHandler
     }
 
     @Override
-    public void send(T msg) {
-        //IMPLEMENT IF NEEDED
+    public void send(T msg)
+    //sending one-way message from the server to the client like broadcast
+    {
+        try {
+            out.write(encdec.encode(msg));
+            out.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
