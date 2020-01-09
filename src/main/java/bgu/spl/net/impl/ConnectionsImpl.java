@@ -9,16 +9,16 @@ import java.util.concurrent.ConcurrentMap;
 
 public class ConnectionsImpl<T> implements Connections<T> {
     //Fields:
-    ConcurrentMap<Integer, ConnectionHandler> users_connections;
+    ConcurrentMap<Integer, ConnectionHandler> users_connections; //connection_id to connectionHandler
     ConcurrentHashMap<String, List<Integer>> Channel_User;
-    ConcurrentHashMap<Integer, User> User_Id;
-    ConcurrentHashMap<String, User> User_Name;
-    Integer NextId=1;
+    ConcurrentHashMap<String, User> name_user;// username to user object
+    ConcurrentHashMap<Integer, User> connectionid_user; //conenctionId to user object
+
 
     public ConnectionsImpl(){
         users_connections = new ConcurrentHashMap<>();
         Channel_User= new ConcurrentHashMap<>();
-        User_Id= new ConcurrentHashMap<>();
+        name_user= new ConcurrentHashMap<>();
     }
 
     @Override
@@ -43,62 +43,56 @@ public class ConnectionsImpl<T> implements Connections<T> {
     @Override
     public void disconnect(int connectionId) {
         if(users_connections.keySet().contains(connectionId)){
-            users_connections.remove(connectionId,users_connections.get(connectionId));
-            User_Id.get(connectionId).logout();
+            users_connections.remove(connectionId);
+            connectionid_user.get(connectionId).logout();
         }
     }
 
-    public User getUserById(Integer id){
-        return this.User_Id.get(id);
+    public User getUserbyConnectionId(Integer connectionId){
+        return this.connectionid_user.get(connectionId);
     }
 
-    public void register(String username, String pass, ConnectionHandler connectionHandler){
-        User user= new User(getNextId() ,pass, username);
-        User_Id.put(user.getId(),user);
-        User_Name.put(user.getUserName(), user);
-        user.login();
-        users_connections.put(user.getId(), connectionHandler);
+    public void register(String username, String pass, ConnectionHandler connectionHandler, int connectionid){
+        User user= new User(pass, username);
+        name_user.put(username,user);
+        users_connections.put(connectionid,connectionHandler);
+        connectionid_user.put(connectionid,user);
+
     }
     
-    public boolean logIn(String username, String password, ConnectionHandler connectionHandler){
+    public boolean login(String username, String password, ConnectionHandler connectionHandler, int connectionid){
         if(isRegister(username)){
-            int userId= User_Name.get(username).getId();
-            User user= User_Name.get(username);
+            User user= name_user.get(username);
             if(user.getPassword().equals(password)) {
-                users_connections.put(userId, connectionHandler);
+                users_connections.put(connectionid, connectionHandler);
+                connectionid_user.put(connectionid,user);
+                user.setConnectionId(connectionid);
                 return true;
             }
             else {return false;}
         }
         else {
-            register(username, password, connectionHandler);
+            register(username, password, connectionHandler, connectionid);
             return true;
         }
     }
 
-    private boolean isRegister(String username){
-        return User_Name.contains(username);
+    public boolean isRegister(String username){
+        return name_user.contains(username);
     }
     
-    public void subscribe(int user_id, String genre){
+    public void subscribe(int connectionid, String genre){
         if(Channel_User.containsKey(genre)){
-            Channel_User.get(genre).add(user_id);
+            Channel_User.get(genre).add(connectionid);
         }
     }
 
-    public void unsubscribe(int user_id,String genre){
+    public void unsubscribe(int connectionid,String genre){
         if(Channel_User.keySet().contains(genre)){
-            if(Channel_User.get(genre).contains(user_id)){
-                Channel_User.get(genre).remove(user_id);
+            if(Channel_User.get(genre).contains(connectionid)){
+                Channel_User.get(genre).remove(connectionid);
             }
         }
     }
-        
-    private int getNextId(){
-        int id= NextId;
-        NextId++;
-        return id;
-    }
-
 
 }

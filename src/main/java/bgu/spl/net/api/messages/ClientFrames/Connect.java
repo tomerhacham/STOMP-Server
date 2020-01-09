@@ -1,6 +1,8 @@
 package bgu.spl.net.api.messages.ClientFrames;
 
 import bgu.spl.net.api.messages.AbstractFrame;
+import bgu.spl.net.srv.ConnectionHandler;
+import bgu.spl.net.srv.Connections;
 import javafx.util.Pair;
 
 import java.util.LinkedList;
@@ -21,6 +23,13 @@ public class Connect extends AbstractFrame {
         headers.add(passcode_header);
 
         super.setHeaders(headers);;
+    }
+
+    @Override
+    public AbstractFrame process(Connections<AbstractFrame> connections, ConnectionHandler<AbstractFrame> connectionHandler, int connectionid) {
+        String username = this.getHeaders().get(2).getValue();
+        String passcode = this.getHeaders().get(3).getValue();
+        connections.login(username,passcode,connectionHandler, connectionid);
     }
 }
 

@@ -1,5 +1,7 @@
 package bgu.spl.net.api.messages;
 
+import bgu.spl.net.srv.ConnectionHandler;
+import bgu.spl.net.srv.Connections;
 import javafx.util.Pair;
 
 import java.util.List;
@@ -10,6 +12,9 @@ public abstract class AbstractFrame {
     private List<Pair<String,String>> headers;
     private String body = "";
     private final String endOfFrame = "\u0000";
+
+    private ConnectionHandler<AbstractFrame> connectionHandler;
+    private int connectionid;
 
     //Constructor:
     public AbstractFrame(String command){
@@ -63,5 +68,22 @@ public abstract class AbstractFrame {
 
     public byte[] getBytes(){
         return toString().getBytes();
+    }
+
+    public abstract AbstractFrame process(Connections<AbstractFrame> connections, ConnectionHandler<AbstractFrame> connectionHandler, int connectionid);
+    public ConnectionHandler<AbstractFrame> getConnectionHandler() {
+        return connectionHandler;
+    }
+
+    public void setConnectionHandler(ConnectionHandler<AbstractFrame> connectionHandler) {
+        this.connectionHandler = connectionHandler;
+    }
+
+    public int getConnectionid() {
+        return connectionid;
+    }
+
+    public void setConnectionid(int connectionid) {
+        this.connectionid = connectionid;
     }
 }

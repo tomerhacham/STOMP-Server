@@ -2,21 +2,25 @@ package bgu.spl.net.impl;
 
 public class User {
 
+
+
     //Fields:
-    private final Integer id;
+    private  Integer connectionId;
     private String Password;
     private String UserName;
     private boolean loggin; //indicate if the user is log in
 
-    public User(Integer id, String password, String userName) {
-        this.id = id;
+    public User(String password, String userName) {
         loggin=false;
         this.Password=password;
         this.UserName=userName;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getConnectionId() {
+        return connectionId;
+    }
+    public void setConnectionId(Integer connectionId) {
+        this.connectionId = connectionId;
     }
     public void login(){loggin=true;}
     public void logout(){loggin=false;}

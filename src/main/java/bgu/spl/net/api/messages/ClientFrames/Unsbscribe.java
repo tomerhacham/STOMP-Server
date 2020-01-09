@@ -8,12 +8,14 @@ import java.util.List;
 public class Unsbscribe extends AbstractFrame {
     public Unsbscribe(String destination, String id, String receipt) {
         super("UNSUBSCRIBE");
-        Pair<String,String> destination_header = new Pair<>("destination:",destination);
-        Pair<String,String> id_header = new Pair<>("id:",id);
-        Pair<String,String> receipt_header = new Pair<>("receipt:",receipt);
-        List<Pair<String,String>> headers = new LinkedList<>();
+        Pair<String, String> destination_header = new Pair<>("destination:", destination);
+        Pair<String, String> id_header = new Pair<>("id:", id);
+        Pair<String, String> receipt_header = new Pair<>("receipt:", receipt);
+        List<Pair<String, String>> headers = new LinkedList<>();
         headers.add(destination_header);
         headers.add(id_header);
         headers.add(receipt_header);
-        super.setHeaders(headers);;
+        super.setHeaders(headers);
+        ;
+    }
 }
