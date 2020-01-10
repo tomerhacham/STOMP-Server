@@ -11,7 +11,7 @@ import java.util.function.Supplier;
 public class Server<T> extends BaseServer<T> {
 
     public Server(int port, Supplier<StompMessagingProtocol<T>> protocolFactory, Supplier<MessageEncoderDecoder<T>> encdecFactory) {
-        super(port, protocolFactory, encdecFactory);
+        //super(port, protocolFactory, encdecFactory);
     }
 
     @Override

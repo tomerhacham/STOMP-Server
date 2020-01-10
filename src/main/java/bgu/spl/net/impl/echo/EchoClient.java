@@ -17,15 +17,6 @@ public class EchoClient {
         //Message msg = new Message("78", "000245", "sci-fi", "");
         //Receipt receipt = new Receipt("78");
         //endregion
-        AbstractFrame subscribe = new Disconnect("78");
-        System.out.println("-------------------");
-        System.out.println(subscribe);
-
-
-        AbstractFrame frame = MessageEncoderDecoderImpl.parser(subscribe.toString());
-        System.out.println("-----------------------");
-        System.out.println(frame);
-
 
 /*        for(int i=0;i<headers.size();i++)
         {

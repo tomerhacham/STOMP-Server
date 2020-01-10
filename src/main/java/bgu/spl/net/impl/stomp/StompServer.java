@@ -16,7 +16,7 @@ public class StompServer {
         Supplier <MessagingProtocol<AbstractFrame>>  protocolFactory = new StompMessageProtocolFactory();
         Supplier<MessageEncoderDecoder<AbstractFrame>> encdecFactory = new EncoderDecoderFactory();
 
-        Server<AbstractFrame> stomp_server = new Server<>(8080, protocolFactory , encdecFactory);
+        Server<AbstractFrame> stomp_server = new Server<AbstractFrame>(8080, protocolFactory , encdecFactory);
         stomp_server.serve();
 
 

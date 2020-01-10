@@ -8,6 +8,7 @@ import bgu.spl.net.srv.Connections;
 public class StompMessagingProtocolImp<T> implements StompMessagingProtocol<AbstractFrame> {
     private int connectionId;
     private Connections<AbstractFrame> connections;
+    private boolean terminate=false;
 
 
     @Override
@@ -20,14 +21,21 @@ public class StompMessagingProtocolImp<T> implements StompMessagingProtocol<Abst
     public void process(AbstractFrame message, ConnectionHandler<AbstractFrame> connectionHandler, int connectionid) {
         message.setConnectionHandler(connectionHandler);
         message.setConnectionid(connectionid);
-        AbstractFrame response = message.process(connections);
-        connections.send(connectionId,response);
+        AbstractFrame response = message.process(connections, connectionHandler, connectionid);
+        if(response.getCommand().equals("MESSAGE"))
+        {
+            connections.send(message.getHeaders().get(0).getValue(), response);
+        }
+        else {
+            Database.getInstance().connectionid_connectionHandler.get(connectionid).send(response);
+        }
+        if (message.getCommand().equals("DISCONNECT") | response.getCommand().equals("ERROR")) {
+            terminate = true;
+        }
     }
 
     @Override
     public boolean shouldTerminate() {
-        //TODO: implements
-
-        return false;
+        return terminate;
     }
 }

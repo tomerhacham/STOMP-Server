@@ -70,7 +70,12 @@ public abstract class AbstractFrame {
         return toString().getBytes();
     }
 
-    public abstract AbstractFrame process(Connections<AbstractFrame> connections, ConnectionHandler<AbstractFrame> connectionHandler, int connectionid);
+    public String getReceiptID() {
+
+        return headers.get(headers.size()-1).getValue();
+    }
+
+    public abstract AbstractFrame process(Connections<AbstractFrame> connections, ConnectionHandler<AbstractFrame> connectionHandler, Integer connectionid);
     public ConnectionHandler<AbstractFrame> getConnectionHandler() {
         return connectionHandler;
     }

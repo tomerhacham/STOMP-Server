@@ -12,17 +12,13 @@ public interface Connections<T> {
 
     void disconnect(int connectionId);
 
+
     //region my addition
-    public User getUserbyConnectionId(Integer connectionId);
+    void addNewconnection(Integer connectionid, ConnectionHandler connectionHandler);
 
-    public void register(String username, String pass, ConnectionHandler connectionHandler, int connectionid);
+    void subscribe(String channel, String subscriptionid, Integer connectionid);
 
-    public boolean login(String username, String password, ConnectionHandler connectionHandler, int connectionid);
+    void unsubscribe(String channel, Integer connectionid);
 
-    public boolean isRegister(String username);
-
-    public void subscribe(int connectionid, String genre);
-
-    public void unsubscribe(int connectionid,String genre);
     //endregion
 }
