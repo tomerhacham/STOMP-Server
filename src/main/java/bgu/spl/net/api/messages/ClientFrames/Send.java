@@ -29,30 +29,30 @@ public class Send extends AbstractFrame {
         return makeMessageframe(connectionid);
     }
 
-    private String sendType(String body){
-        String type="";
-        if(body.contains(" has added the book ")){type="add";}
-        else if(body.contains(" wish to borrow ")){type="borrow";}
-        else if(body.contains("Returning")){type="return";}
-        else if(body.contains("Taking")){type="take";}
-        else if(body.contains("book status")){type="status";}
-        return type;
-    }
-/*    private LinkedList<String> spliterbytype(String type, String body){
-        LinkedList<String> extractedParam=new LinkedList<>();
-        String delimeter;
-        switch (type){
-            case "add":{delimeter=" has added the book "; extractedParam = advanceSpliter(delimeter,body);break;}//extractedParam at 0  is the USERNAME and 1 is the BOOKNAME
-            case "borrow":{delimeter=" wish to borrow "; extractedParam=advanceSpliter(delimeter,body);break;}//extractedParam at 0  is the USERNAME and 1 is the BOOKNAME
-            case "take":{delimeter="Taking ";extractedParam = advanceSpliter(" from ",advanceSpliter(delimeter,body).get(1));break;}
-            case "return":{delimeter="Returning ";extractedParam = advanceSpliter(" to ",advanceSpliter(delimeter,body).get(1));break;}
-            case "status":{break;}
+    /*    private String sendType(String body){
+            String type="";
+            if(body.contains(" has added the book ")){type="add";}
+            else if(body.contains(" wish to borrow ")){type="borrow";}
+            else if(body.contains("Returning")){type="return";}
+            else if(body.contains("Taking")){type="take";}
+            else if(body.contains("book status")){type="status";}
+          return type;
         }
-        return extractedParam;
-    }
-    private LinkedList<String> advanceSpliter(String delimeter,String sentence){
-        return new LinkedList(Arrays.asList(sentence.split(delimeter)));
-    }*/
+    /*    private LinkedList<String> spliterbytype(String type, String body){
+            LinkedList<String> extractedParam=new LinkedList<>();
+            String delimeter;
+            switch (type){
+                case "add":{delimeter=" has added the book "; extractedParam = advanceSpliter(delimeter,body);break;}//extractedParam at 0  is the USERNAME and 1 is the BOOKNAME
+                case "borrow":{delimeter=" wish to borrow "; extractedParam=advanceSpliter(delimeter,body);break;}//extractedParam at 0  is the USERNAME and 1 is the BOOKNAME
+                case "take":{delimeter="Taking ";extractedParam = advanceSpliter(" from ",advanceSpliter(delimeter,body).get(1));break;}
+                case "return":{delimeter="Returning ";extractedParam = advanceSpliter(" to ",advanceSpliter(delimeter,body).get(1));break;}
+                case "status":{break;}
+            }
+            return extractedParam;
+        }
+        private LinkedList<String> advanceSpliter(String delimeter,String sentence){
+            return new LinkedList(Arrays.asList(sentence.split(delimeter)));
+        }*/
     private Message makeMessageframe(Integer connectionid){
         User user = Database.getInstance().getUserbyConnectionId(connectionid);
         String subId = user.getSubscriptionId(this.getHeaders().get(0).getValue());

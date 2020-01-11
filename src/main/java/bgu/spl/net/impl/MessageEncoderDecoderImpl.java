@@ -50,18 +50,30 @@ public class MessageEncoderDecoderImpl<A> implements MessageEncoderDecoder<Abstr
     }
 
     private AbstractFrame parser(String result){
-        int index=1;
+        int index=0;
         String[] parameters = result.split(System.lineSeparator());
         String command = parameters[0];
         List<String> headers = new LinkedList<>();
-        while(!parameters[index].equals(""))
+        /*while( index<parameters.length && !parameters[index].equals(""))
         {
             headers.add(parameters[index].split(":")[1]);
             index++;
+        }*/
+        for(String param : parameters){
+            if(index != 0) {
+                headers.add(param.split(":")[1]);
+            }
+            index++;
         }
-        index++;
-        String body = parameters[index];
+        String body="";
+        try{
+            body = parameters[index];
+        }
+        catch(Exception e){
+            body="";
+        }
         AbstractFrame frame = InterpretClientFrame(command, headers, body);
+        System.out.println(frame.toString());
         return frame;
     }
 

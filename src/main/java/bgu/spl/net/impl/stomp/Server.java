@@ -8,10 +8,10 @@ import bgu.spl.net.srv.BlockingConnectionHandler;
 
 import java.util.function.Supplier;
 
-public class Server<T> extends BaseServer<T> {
+public class Server<AbstractFrame> extends BaseServer<AbstractFrame> {
 
-    public Server(int port, Supplier<StompMessagingProtocol<T>> protocolFactory, Supplier<MessageEncoderDecoder<T>> encdecFactory) {
-        //super(port, protocolFactory, encdecFactory);
+    public Server(int port, Supplier<StompMessagingProtocol> protocolFactory, Supplier<MessageEncoderDecoder> encdecFactory) {
+        super(port, protocolFactory, encdecFactory);
     }
 
     @Override
@@ -20,6 +20,6 @@ public class Server<T> extends BaseServer<T> {
     }
 
     @Override
-    protected void execute(BlockingConnectionHandler<T> handler) {
+    protected void execute(BlockingConnectionHandler<AbstractFrame> handler) {
         new Thread(handler).start();    }
 }
