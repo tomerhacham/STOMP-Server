@@ -32,7 +32,6 @@ public class Connect extends AbstractFrame {
 
     @Override
     public AbstractFrame process(Connections<AbstractFrame> connections, ConnectionHandler<AbstractFrame> connectionHandler, Integer connectionid) {
-        //TODO: all abstractframe should hold receipt header
         String username = this.getHeaders().get(2).getValue();
         String passcode = this.getHeaders().get(3).getValue();
         AbstractFrame returnFrame;
