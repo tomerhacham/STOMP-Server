@@ -26,7 +26,6 @@ public class Unsbscribe extends AbstractFrame {
         Database database = Database.getInstance();
         String subscriptionid = this.getHeaders().get(0).getValue();
         database.unsubscribe(subscriptionid,connectionid);
-        //TODO: need to implement getreceipt
         return new Receipt(getReceiptID());
     }
 }

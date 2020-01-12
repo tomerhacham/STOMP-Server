@@ -29,7 +29,6 @@ public class Subscribe extends AbstractFrame {
         String channel = this.getHeaders().get(0).getValue();
         String subscriptionid = this.getHeaders().get(1).getValue();
         database.subscribe(channel,subscriptionid,connectionid);
-        //TODO: need to implement getreceipt
         return new Receipt(getReceiptID());
     }
 }
