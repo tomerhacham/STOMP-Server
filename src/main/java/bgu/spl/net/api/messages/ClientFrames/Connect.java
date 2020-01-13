@@ -35,7 +35,7 @@ public class Connect extends AbstractFrame {
         String username = this.getHeaders().get(2).getValue();
         String passcode = this.getHeaders().get(3).getValue();
         AbstractFrame returnFrame;
-        Integer returnCode = Database.getInstance().login(username,passcode,connectionid);
+        Integer returnCode = Database.getInstance().login(username,passcode,connectionHandler,connectionid);
         switch(returnCode){
             case 0:{ returnFrame = new Connected("1.2");break;}
             case 1:{returnFrame = new Error(getReceiptID(),"the user is already logged in","Error according to the message:"+System.lineSeparator()+ this.toString());break;}

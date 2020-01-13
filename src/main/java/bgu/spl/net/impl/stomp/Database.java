@@ -35,10 +35,10 @@ public class Database {
         }
        return instance;
     }
-    public int login(String username, String password, Integer connectionid){
+    public int login(String username, String password, ConnectionHandler connectionHandler,Integer connectionid){
         Integer returnCode=null;
 
-        if(username_user.contains(username))
+        if(username_user.containsKey(username))
         {
             User user = username_user.get(username);
             if(!user.isLoggin())
@@ -47,7 +47,7 @@ public class Database {
                 {
                     user.setConnectionId(connectionid);
                     connectionid_user.put(connectionid, user);
-                    connections.addNewconnection(connectionid,connectionid_connectionHandler.get(connectionid));
+                    connections.addNewconnection(connectionid,connectionHandler);
                     user.login();
                     returnCode=0;
                 }
@@ -62,7 +62,7 @@ public class Database {
         }
         else//user is not register
             {
-                register(username,password, connectionid_connectionHandler.get(connectionid), connectionid);
+                register(username,password, connectionHandler, connectionid);
                 returnCode=0;
             }
         return returnCode;
@@ -83,8 +83,9 @@ public class Database {
     }
     public void disconnect(Integer connectionid){
         connectionid_user.get(connectionid).logout();
-        connectionid_connectionHandler.remove(connectionid);
-        connectionid_user.remove(connectionid);
+        //todo: check if we need to remove the connectionHandler and which one (the prev or the the current)
+        connectionid_connectionHandler.remove(connectionid, connectionid_connectionHandler.get(connectionid));
+        connectionid_user.remove(connectionid, connectionid_user.get(connectionid));
         connections.disconnect(connectionid);
     }
     public void subscribe(String channel, String subscriptionid, Integer connectionid){

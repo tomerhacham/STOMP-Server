@@ -55,7 +55,10 @@ public class ConnectionsImpl<T> implements Connections<T> {
 
     @Override
     public void addNewconnection(Integer connectionid, ConnectionHandler connectionHandler) {
-        connectionid_connetionHandler.putIfAbsent(connectionid, connectionHandler);
+        //connectionid_connetionHandler.putIfAbsent(connectionid, connectionHandler);
+        if(!connectionid_connetionHandler.containsKey(connectionid)){
+            connectionid_connetionHandler.put(connectionid,connectionHandler);
+        }
     }
 
     @Override
@@ -66,6 +69,7 @@ public class ConnectionsImpl<T> implements Connections<T> {
             usersPool = Channel_User.get(channel);
         } else {
             usersPool = new LinkedList<>();
+            Channel_User.put(channel,usersPool);
         }
         usersPool.add(user);
     }

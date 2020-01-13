@@ -46,11 +46,14 @@ public class MessageEncoderDecoderImpl<A> implements MessageEncoderDecoder<Abstr
         //this is not actually required as it is the default encoding in java.
         String result = new String(bytes, 0, len, StandardCharsets.UTF_8);
         len = 0;
+        //bytes = new byte[1 << 10];
         return result;
     }
 
-    private AbstractFrame parser(String result){
-        int index=0;
+    private AbstractFrame parser(String result) {
+        //TODO: need to fix the the problem in the Send frame which the body is not included in the post-parsing
+        System.out.println("Parser started");
+        int index = 0;
         String[] parameters = result.split(System.lineSeparator());
         String command = parameters[0];
         List<String> headers = new LinkedList<>();
@@ -59,20 +62,21 @@ public class MessageEncoderDecoderImpl<A> implements MessageEncoderDecoder<Abstr
             headers.add(parameters[index].split(":")[1]);
             index++;
         }*/
-        for(String param : parameters){
-            if(index != 0) {
-                headers.add(param.split(":")[1]);
+        for (String param : parameters) {
+            if (index != 0) {
+                if(param.contains(":")){headers.add(param.split(":")[1]);}
             }
             index++;
         }
-        String body="";
-        try{
+        String body = "";
+        try {
             body = parameters[index];
-        }
-        catch(Exception e){
-            body="";
+        } catch (Exception e) {
+            body = "";
         }
         AbstractFrame frame = InterpretClientFrame(command, headers, body);
+        System.out.println("Received Message");
+        System.out.println("----------------");
         System.out.println(frame.toString());
         return frame;
     }
@@ -81,19 +85,24 @@ public class MessageEncoderDecoderImpl<A> implements MessageEncoderDecoder<Abstr
         AbstractFrame frame = null;
         switch (command) {
             case "CONNECT": {
-                frame = new Connect(headers.get(0), headers.get(1), headers.get(2), headers.get(3),headers.get(4));break;
+                frame = new Connect(headers.get(0), headers.get(1), headers.get(2), headers.get(3), headers.get(4));
+                break;
             }
             case "SUBSCRIBE": {
-                frame = new Subscribe(headers.get(0), headers.get(1), headers.get(2));break;
+                frame = new Subscribe(headers.get(0), headers.get(1), headers.get(2));
+                break;
             }
             case "UNSUBSCRIBE": {
-                frame = new Unsbscribe(headers.get(0), headers.get(1));break;
+                frame = new Unsbscribe(headers.get(0), headers.get(1));
+                break;
             }
             case "SEND": {
-                frame = new Send(headers.get(0), headers.get(1), body);break;
+                frame = new Send(headers.get(0), headers.get(1), body);
+                break;
             }
             case "DISCONNECT": {
-                frame = new Disconnect(headers.get(0));break;
+                frame = new Disconnect(headers.get(0));
+                break;
             }
         }
         return frame;

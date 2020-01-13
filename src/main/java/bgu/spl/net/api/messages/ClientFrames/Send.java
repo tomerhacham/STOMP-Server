@@ -55,6 +55,7 @@ public class Send extends AbstractFrame {
         }*/
     private Message makeMessageframe(Integer connectionid){
         User user = Database.getInstance().getUserbyConnectionId(connectionid);
+        //TODO: what happened if you publish a book in channel that you not subscribe to, the subid is empty
         String subId = user.getSubscriptionId(this.getHeaders().get(0).getValue());
         String messageid = Database.getInstance().getnextMesaageID().toString();
         String destination = this.getHeaders().get(0).getValue();
