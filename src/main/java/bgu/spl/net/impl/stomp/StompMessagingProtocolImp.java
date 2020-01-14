@@ -22,6 +22,9 @@ public class StompMessagingProtocolImp<T> implements StompMessagingProtocol<Abst
         message.setConnectionHandler(connectionHandler);
         message.setConnectionid(connectionid);
         AbstractFrame response = message.process(connections, connectionHandler, connectionid);
+        System.out.println("Sending Frame");
+        System.out.println("-------------");
+        System.out.println( response.toString());
         if (response.getCommand().equals("MESSAGE")) {
             String channel = message.getHeaders().get(0).getValue();
             connections.send(channel, response);

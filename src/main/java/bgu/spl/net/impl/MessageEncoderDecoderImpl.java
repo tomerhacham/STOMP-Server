@@ -56,24 +56,34 @@ public class MessageEncoderDecoderImpl<A> implements MessageEncoderDecoder<Abstr
         int index = 0;
         String[] parameters = result.split(System.lineSeparator());
         String command = parameters[0];
+        String body = "";
         List<String> headers = new LinkedList<>();
-        /*while( index<parameters.length && !parameters[index].equals(""))
-        {
-            headers.add(parameters[index].split(":")[1]);
-            index++;
-        }*/
         for (String param : parameters) {
             if (index != 0) {
-                if(param.contains(":")){headers.add(param.split(":")[1]);}
-            }
+                try {
+                    if( !(command.equals("SEND") && index==parameters.length-1))
+                    {   if(param.contains(":")){ headers.add(param.split(":")[1]);} }
+                    }
+                catch(Exception ex)
+                    {
+                        //body = param;
+                    }
+                }
             index++;
+            }
+        if(command.equals("SEND")){
+            body = parameters[parameters.length-1];
         }
-        String body = "";
+        //region old version
+//            index++;
+
+/*        String body = "";
         try {
             body = parameters[index];
         } catch (Exception e) {
             body = "";
-        }
+        }*/
+//endregion
         AbstractFrame frame = InterpretClientFrame(command, headers, body);
         System.out.println("Received Message");
         System.out.println("----------------");
