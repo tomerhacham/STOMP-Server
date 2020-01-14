@@ -77,7 +77,7 @@ public class ConnectionsImpl<T> implements Connections<T> {
     @Override
     public void unsubscribe(String channel, Integer connectionid) {
         User user = Database.getInstance().getUserbyConnectionId(connectionid);
-        if (Channel_User.containsKey(channel) && user != null) {
+        if (Channel_User.containsKey(channel) && user != null && channel!="") {
             Channel_User.get(channel).remove(user);
 
         }

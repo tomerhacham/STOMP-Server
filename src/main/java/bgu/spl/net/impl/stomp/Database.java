@@ -94,8 +94,10 @@ public class Database {
     }
     public void unsubscribe(String subscriptionid, Integer connectionid)
     {
-        connectionid_user.get(connectionid).removeChannel(subscriptionid);
-        connections.unsubscribe(subscriptionid,connectionid);
+        User user = connectionid_user.get(connectionid);
+        String channel = user.getChannelbySubId(subscriptionid);
+        user.removeChannel(subscriptionid);
+        connections.unsubscribe(channel,connectionid);
     }
     public User getUserbyConnectionId(Integer connectionid){
         return connectionid_user.get(connectionid);

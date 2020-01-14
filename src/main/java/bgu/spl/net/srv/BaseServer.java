@@ -60,8 +60,8 @@ public abstract class BaseServer<AbstractFrame> implements Server<AbstractFrame>
                         connections,
                         nextConnectionId
                         );
-                nextConnectionId++;
                 database.addNewConnection(nextConnectionId,handler);
+                nextConnectionId++;
 
                 execute(handler);
             }

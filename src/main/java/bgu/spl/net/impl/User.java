@@ -55,4 +55,11 @@ public class User {
         }
         return "";
     }
+    public String getChannelbySubId(String subid){
+        for(Pair<String, String> pair: channels){
+            if(pair.getValue().equals(subid))
+                return pair.getKey();
+        }
+        return "";
+    }
 }
