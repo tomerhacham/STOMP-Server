@@ -12,20 +12,20 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Connect extends AbstractFrame {
-    public Connect(String version, String host, String login, String passcode, String receipt) {
+    public Connect(String version, String host, String login, String passcode) {
     super("CONNECT");
         Pair<String,String> accept_version_header = new Pair<>("accept-version:",version);
         Pair<String,String> host_header = new Pair<>("host:",host);
         Pair<String,String> login_header = new Pair<>("login:",login);
         Pair<String,String> passcode_header = new Pair<>("passcode:",passcode);
-        Pair<String,String> receipt_header = new Pair<>("receipt:",receipt);
+
 
         List<Pair<String,String>> headers = new LinkedList<>();
         headers.add(accept_version_header);
         headers.add(host_header);
         headers.add(login_header);
         headers.add(passcode_header);
-        headers.add(receipt_header);
+
 
         super.setHeaders(headers);;
     }
@@ -38,8 +38,8 @@ public class Connect extends AbstractFrame {
         Integer returnCode = Database.getInstance().login(username,passcode,connectionHandler,connectionid);
         switch(returnCode){
             case 0:{ returnFrame = new Connected("1.2");break;}
-            case 1:{returnFrame = new Error(getReceiptID(),"the user is already logged in","Error according to the message:"+System.lineSeparator()+ this.toString());break;}
-            case 2:{returnFrame = new Error(getReceiptID(),"password incorrect","Error according to the message:"+System.lineSeparator()+ this.toString());break;}
+            case 1:{returnFrame = new Error("CONNECT","the user is already logged in","Error according to the message:"+System.lineSeparator()+ this.toString());break;}
+            case 2:{returnFrame = new Error("CONNECT","password incorrect","Error according to the message:"+System.lineSeparator()+ this.toString());break;}
             default:
                 returnFrame = new Error(getReceiptID(),"unexpected returnCode","error accord in the login procees at database class");
         }

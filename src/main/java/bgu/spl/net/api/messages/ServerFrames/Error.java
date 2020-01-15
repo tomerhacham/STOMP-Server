@@ -16,7 +16,7 @@ public class Error extends AbstractFrame {
         List<Pair<String,String>> headers = new LinkedList<>();
         headers.add(receipt_header);
         headers.add(message_header);
-        super.setHeaders(headers);;
+        super.setHeaders(headers);
         super.setBody(body);
     }
 

@@ -95,7 +95,7 @@ public class MessageEncoderDecoderImpl<A> implements MessageEncoderDecoder<Abstr
         AbstractFrame frame = null;
         switch (command) {
             case "CONNECT": {
-                frame = new Connect(headers.get(0), headers.get(1), headers.get(2), headers.get(3), headers.get(4));
+                frame = new Connect(headers.get(0), headers.get(1), headers.get(2), headers.get(3));
                 break;
             }
             case "SUBSCRIBE": {
@@ -107,7 +107,7 @@ public class MessageEncoderDecoderImpl<A> implements MessageEncoderDecoder<Abstr
                 break;
             }
             case "SEND": {
-                frame = new Send(headers.get(0), headers.get(1), body);
+                frame = new Send(headers.get(0), body);
                 break;
             }
             case "DISCONNECT": {

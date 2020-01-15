@@ -13,13 +13,11 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Send extends AbstractFrame {
-    public Send(String destination, String receipt, String body) {
+    public Send(String destination, String body) {
         super("SEND");
         Pair<String,String> destination_header = new Pair<>("destination:",destination);
-        Pair<String,String> receipt_header = new Pair<>("receipt:",receipt);
         List<Pair<String,String>> headers = new LinkedList<>();
         headers.add(destination_header);
-        headers.add(receipt_header);
         super.setHeaders(headers);;
         super.setBody(body);
     }
