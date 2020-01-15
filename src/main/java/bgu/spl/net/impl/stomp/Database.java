@@ -37,33 +37,30 @@ public class Database {
     }
     public int login(String username, String password, ConnectionHandler connectionHandler,Integer connectionid){
         Integer returnCode=null;
-
-        if(username_user.containsKey(username))
-        {
-            User user = username_user.get(username);
-            user.setConnectionId(connectionid);
-            connectionid_user.put(connectionid, user);
-            if(!user.isLoggin())
-            {
-               if(user.getPassword().equals(password))
+            if (username_user.containsKey(username)) {
+                User user = username_user.get(username);
+                user.setConnectionId(connectionid);
+                addNewConnection(connectionid,connectionHandler);
+                connectionid_user.put(connectionid, user);
+                if (!user.isLoggin()) {
+                    if (user.getPassword().equals(password)) {
+                        //connections.addNewconnection(connectionid, connectionHandler);
+                        user.login();
+                        returnCode = 0;
+                    } else//password was incorrect
+                    {
+                        returnCode = 2;
+                        disconnect(connectionid);
+                    }
+                } else//user is already logged in
                 {
-                    connections.addNewconnection(connectionid,connectionHandler);
-                    user.login();
-                    returnCode=0;
+                    returnCode = 1;
+                    disconnect(connectionid);
                 }
-               else//password was incorrect
-                   {returnCode=2;
-                   disconnect(connectionid);
-                   }
-            }
-            else//user is already logged in
-                {returnCode=1;
-                disconnect(connectionid);}
-        }
-        else//user is not register
+            } else//user is not register
             {
-                register(username,password, connectionHandler, connectionid);
-                returnCode=0;
+                register(username, password, connectionHandler, connectionid);
+                returnCode = 0;
             }
         return returnCode;
     }
