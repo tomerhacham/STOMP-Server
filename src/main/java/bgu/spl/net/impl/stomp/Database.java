@@ -41,12 +41,12 @@ public class Database {
         if(username_user.containsKey(username))
         {
             User user = username_user.get(username);
+            user.setConnectionId(connectionid);
+            connectionid_user.put(connectionid, user);
             if(!user.isLoggin())
             {
                if(user.getPassword().equals(password))
                 {
-                    user.setConnectionId(connectionid);
-                    connectionid_user.put(connectionid, user);
                     connections.addNewconnection(connectionid,connectionHandler);
                     user.login();
                     returnCode=0;
@@ -82,11 +82,14 @@ public class Database {
 
     }
     public void disconnect(Integer connectionid){
-        connectionid_user.get(connectionid).logout();
+        if(connectionid_user.containsKey(connectionid)) {
+            connectionid_user.get(connectionid).logout();
+            connectionid_user.get(connectionid).setConnectionId(-1);
+        }
         //todo: check if we need to remove the connectionHandler and which one (the prev or the the current)
+        connections.disconnect(connectionid);
         connectionid_connectionHandler.remove(connectionid, connectionid_connectionHandler.get(connectionid));
         connectionid_user.remove(connectionid, connectionid_user.get(connectionid));
-        connections.disconnect(connectionid);
     }
     public void subscribe(String channel, String subscriptionid, Integer connectionid){
         connectionid_user.get(connectionid).addChannel(channel,subscriptionid);
@@ -96,7 +99,6 @@ public class Database {
     {
         User user = connectionid_user.get(connectionid);
         String channel = user.getChannelbySubId(subscriptionid);
-        user.removeChannel(subscriptionid);
         connections.unsubscribe(channel,connectionid);
     }
     public User getUserbyConnectionId(Integer connectionid){

@@ -28,7 +28,9 @@ public class StompMessagingProtocolImp<T> implements StompMessagingProtocol<Abst
         if (response.getCommand().equals("MESSAGE")) {
             String channel = message.getHeaders().get(0).getValue();
             connections.send(channel, response);
-        } else {
+        }
+        else
+            {
             connectionHandler.send(response);
         }
         if (message.getCommand().equals("DISCONNECT") | response.getCommand().equals("ERROR")) {

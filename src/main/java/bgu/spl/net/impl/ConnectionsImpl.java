@@ -40,9 +40,22 @@ public class ConnectionsImpl<T> implements Connections<T> {
     @Override
     public void disconnect(int connectionId) {
         if (connectionid_connetionHandler.containsKey(connectionId)) {
-            connectionid_connetionHandler.remove(connectionId);
+            connectionid_connetionHandler.remove(connectionId, connectionid_connetionHandler.get(connectionId));
+            User disconnected_user = Database.getInstance().getUserbyConnectionId(connectionId);
             for (String channel : Channel_User.keySet()) {
-                for (User user : Channel_User.get(channel)) {
+                List<User> usersPool = Channel_User.get(channel);
+                for (User user : usersPool) {
+                    if (user.getUserName().equals(disconnected_user.getUserName())) {
+                        usersPool.remove(disconnected_user);
+                    }
+                }
+            }
+            disconnected_user.clearsubscription();
+        }
+    }
+
+
+/*                for (User user : Channel_User.get(channel)) {
                     if (user.getConnectionId() == connectionId) {
                         Channel_User.get(channel).remove(user);
                         user.clearsubscription();
@@ -51,7 +64,7 @@ public class ConnectionsImpl<T> implements Connections<T> {
             }
 
         }
-    }
+    }*/
 
     @Override
     public void addNewconnection(Integer connectionid, ConnectionHandler connectionHandler) {
@@ -77,9 +90,9 @@ public class ConnectionsImpl<T> implements Connections<T> {
     @Override
     public void unsubscribe(String channel, Integer connectionid) {
         User user = Database.getInstance().getUserbyConnectionId(connectionid);
-        if (Channel_User.containsKey(channel) && user != null && channel!="") {
+        if (Channel_User.containsKey(channel) && !Channel_User.get(channel).isEmpty() && user != null && channel!="") {
             Channel_User.get(channel).remove(user);
-
+            user.removeChannel(user.getSubscriptionId(channel));
         }
     }
 }
