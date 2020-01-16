@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-public class MessageEncoderDecoderImpl<A> implements MessageEncoderDecoder<AbstractFrame> {
+public class MessageEncoderDecoderImpl<T> implements MessageEncoderDecoder<AbstractFrame> {
 
     private byte[] bytes = new byte[1 << 10]; //start with 1k
     private int len = 0;

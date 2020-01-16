@@ -41,11 +41,13 @@ public class User {
     public String getPassword(){ return this.Password; }
     public String getUserName() {return this.username;}
     public void removeChannel(String subscriptionid) {
+        if(channels!=null){
         for (Pair pair :channels) {
             if (pair.getValue().equals(subscriptionid)){
                 channels.remove(pair);
             }
         }
+    }
     }
     public String getSubscriptionId(String channel){
         for(Pair<String,String> pair:channels){

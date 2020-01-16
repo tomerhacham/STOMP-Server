@@ -3,6 +3,9 @@ package bgu.spl.net.srv;
 import bgu.spl.net.api.MessageEncoderDecoder;
 import bgu.spl.net.api.MessagingProtocol;
 import bgu.spl.net.api.StompMessagingProtocol;
+import bgu.spl.net.api.messages.AbstractFrame;
+import bgu.spl.net.impl.ConnectionsImpl;
+import bgu.spl.net.impl.stomp.Database;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -17,10 +20,14 @@ import java.util.function.Supplier;
 public class Reactor<T> implements Server<T> {
 
     private final int port;
-    private final Supplier<StompMessagingProtocol<T>> protocolFactory;
-    private final Supplier<MessageEncoderDecoder<T>> readerFactory;
+    private final Supplier<StompMessagingProtocol> protocolFactory;
+    private final Supplier<MessageEncoderDecoder> readerFactory;
     private final ActorThreadPool pool;
     private Selector selector;
+    private int nextConnectionId=1;
+    private Database database;
+    private  Connections connections;
+
 
     private Thread selectorThread;
     private final ConcurrentLinkedQueue<Runnable> selectorTasks = new ConcurrentLinkedQueue<>();
@@ -28,13 +35,17 @@ public class Reactor<T> implements Server<T> {
     public Reactor(
             int numThreads,
             int port,
-            Supplier<StompMessagingProtocol<T>> protocolFactory,
-            Supplier<MessageEncoderDecoder<T>> readerFactory) {
+            Supplier<StompMessagingProtocol> protocolFactory,
+            Supplier<MessageEncoderDecoder> readerFactory) {
 
         this.pool = new ActorThreadPool(numThreads);
         this.port = port;
         this.protocolFactory = protocolFactory;
         this.readerFactory = readerFactory;
+        this.connections = new ConnectionsImpl<AbstractFrame>();
+        this.database = Database.getInstance();
+        database.setConnections(connections);
+
     }
 
     @Override
@@ -101,7 +112,9 @@ public class Reactor<T> implements Server<T> {
                 readerFactory.get(),
                 protocolFactory.get(),
                 clientChan,
-                this);
+                this, this.connections, nextConnectionId);
+        database.addNewConnection(nextConnectionId,handler);
+        nextConnectionId++;
         clientChan.register(selector, SelectionKey.OP_READ, handler);
     }
 

@@ -17,7 +17,8 @@ public class StompServer {
         //Supplier init
         Supplier <StompMessagingProtocol>  protocolFactory = new StompMessageProtocolFactory();
         Supplier<MessageEncoderDecoder> encdecFactory = new EncoderDecoderFactory();
-        Server.threadPerClient( 8888,protocolFactory, encdecFactory).serve();
+        //Server.threadPerClient( 8888,protocolFactory, encdecFactory).serve();
+        Server.reactor(2,8888,protocolFactory,encdecFactory).serve();
 
     }
 

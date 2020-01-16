@@ -78,13 +78,15 @@ public class ConnectionsImpl<T> implements Connections<T> {
     public void subscribe(String channel, String subscriptionid, Integer connectionid) {
         List<User> usersPool;
         User user = Database.getInstance().getUserbyConnectionId(connectionid);
-        if (Channel_User.containsKey(channel)) {
-            usersPool = Channel_User.get(channel);
-        } else {
-            usersPool = new LinkedList<>();
-            Channel_User.put(channel,usersPool);
+        synchronized (Channel_User) {
+            if (Channel_User.containsKey(channel)) {
+                usersPool = Channel_User.get(channel);
+            } else {
+                usersPool = new LinkedList<>();
+                Channel_User.put(channel, usersPool);
+            }
+            usersPool.add(user);
         }
-        usersPool.add(user);
     }
 
     @Override
