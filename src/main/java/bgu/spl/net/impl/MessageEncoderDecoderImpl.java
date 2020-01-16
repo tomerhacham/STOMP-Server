@@ -107,6 +107,7 @@ public class MessageEncoderDecoderImpl<A> implements MessageEncoderDecoder<Abstr
                 break;
             }
             case "SEND": {
+                if(body.contains("book status") || body.contains("Book status")){body = "Book status";}
                 frame = new Send(headers.get(0), body);
                 break;
             }
