@@ -44,8 +44,8 @@ public class Database {
                 connectionid_user.put(connectionid, user);
                 if (!user.isLoggin()) {
                     if (user.getPassword().equals(password)) {
-                        //connections.addNewconnection(connectionid, connectionHandler);
                         user.login();
+                        connections.addNewconnection(connectionid, connectionHandler);
                         returnCode = 0;
                     } else//password was incorrect
                     {
